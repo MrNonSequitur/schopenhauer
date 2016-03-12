@@ -1,5 +1,8 @@
 I
 
+"When all hope is gone, one can still find consolation in reading Schopenhauer. No wait, Scnhauer."
+--Steven Kaas
+
 In honor of Protobowl's readme, this readme will also be an incoherent mess.
 
 
