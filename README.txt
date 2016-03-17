@@ -3,7 +3,9 @@ I
 "When all hope is gone, one can still find consolation in reading Schopenhauer. No wait, Scnhauer."
 --Steven Kaas
 
-In honor of Protobowl's readme, this readme will also be an incoherent mess.
+Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Ubuntu's Selenium package is built for python 2.7 I guess.
+
+In honor of Protobowl's readme, this project's readme will also be an incoherent mess. In honor of Protobowl, this project will also be a piece of crap.
 
 
 II
