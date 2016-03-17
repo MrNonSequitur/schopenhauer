@@ -3,7 +3,8 @@ I
 "When all hope is gone, one can still find consolation in reading Schopenhauer. No wait, Scnhauer."
 --Steven Kaas
 
-Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Ubuntu's Selenium package is built for python 2.7 I guess.
+Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Ubuntu's Selenium package is built for Python 2.7 I guess.
+Run interaction.py to run the program.
 
 In honor of Protobowl's readme, this project's readme will also be an incoherent mess. In honor of Protobowl, this project will also be a piece of crap.
 
