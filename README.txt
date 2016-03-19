@@ -4,7 +4,7 @@ I
 --Steven Kaas
 
 Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Ubuntu's Selenium package is built for Python 2.7 I guess.
-Run interaction.py to run the program.
+Run main.py to run the program.
 
 In honor of Protobowl's readme, this project's readme will also be an incoherent mess. In honor of Protobowl, this project will also be a piece of crap.
 
