@@ -3,7 +3,7 @@ I
 "When all hope is gone, one can still find consolation in reading Schopenhauer. No wait, Scnhauer."
 --Steven Kaas
 
-Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Ubuntu's Selenium package is built for Python 2.7 I guess.
+Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because Selenium is only built for Python 2.7 I guess.
 Run main.py to run the program.
 
 In honor of Protobowl's readme, this project's readme will also be an incoherent mess. In honor of Protobowl, this project will also be a piece of crap.
@@ -30,4 +30,6 @@ Real holy laughter in solute heart of the poem of life butchered out of their ow
 
 III
 
-TODO: Make this actual thing at some point.
+Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It was hacked together in a relatively short time by the 2015 Inglemoor Quiz Bowl team. It is very good at answering Protobowl questions, due to its use of a revolutionary new tactic known as "cheating".
+
+TODO: args.
