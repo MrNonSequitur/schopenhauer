@@ -3,10 +3,19 @@ I
 "When all hope is gone, one can still find consolation in reading Schopenhauer. No wait, Scnhauer."
 --Steven Kaas
 
-Probably you need to install Selenium for Python to run this program. I could only get it to work in Python 2, because my copy of Selenium is in Python 2.7 I guess.
+Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It does this by cheating.
+
 Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use.
 
-In honor of Protobowl's readme, this project's readme will also be an incoherent mess. In honor of Protobowl, this project will also be a piece of crap.
+You probably need to install Selenium for Python to run this program. I could only get it to work in Python 2, because my copy of Selenium is for Python 2.7.
+
+If Schopenhauer does not know the answer to a question, Schopenhauer will be very bad-mannered and attempt to skip the question.
+
+Schopenhauer was hacked together in a relatively short time by Wyatt Carpenter, Co-President of the 2015-2016 Inglemoor Quiz Bowl team. Construction of Schopenhauer was aided by the various interesting properties of Protobowl's many errors.
+
+You might think Arthur Schopenhauer is the mascot of this project. He is not. This project IS Arthur Schopenhauer. Wille zum Leben, baby!
+
+In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
 
 
 II
@@ -30,8 +39,15 @@ Real holy laughter in solute heart of the poem of life butchered out of their ow
 
 III
 
-Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It does this by cheating.
-If Schopenhauer does not know the answer to a question, Schopenhauer will be very bad-mannered and attempt to skip the question.
-Schopenhauer was hacked together in a relatively short time by the 2015-2016 Inglemoor Quiz Bowl team.
 
-TODO: args.
+Some fun Schopenhauer facts, stolen straight from his Wikipedia page:
+
+Schopenhauer had a notably strained relationship with his mother Johanna. He wrote his first book, On the Fourfold Root of the Principle of Sufficient Reason, while at university. His mother informed him that the book was incomprehensible and it was unlikely that anyone would ever buy a copy. In a fit of temper Arthur Schopenhauer told her that his work would be read long after the "rubbish" she wrote would have been totally forgotten.
+
+In 1820, Schopenhauer became a lecturer at the University of Berlin. He scheduled his lectures to coincide with those of the famous philosopher G. W. F. Hegel, whom Schopenhauer described as a "clumsy charlatan." However, only five students turned up to Schopenhauer's lectures, and he dropped out of academia.
+
+While in Berlin, Schopenhauer was named as a defendant in a lawsuit initiated by a woman named Caroline Marquet. She asked for damages, alleging that Schopenhauer had pushed her. According to Schopenhauer's court testimony, she deliberately annoyed him by raising her voice while standing right outside his door. Marquet alleged that the philosopher had assaulted and battered her after she refused to leave his doorway. Her companion testified that she saw Marquet prostrate outside his apartment. Because Marquet won the lawsuit, Schopenhauer made payments to her for the next twenty years. When she died, he wrote on a copy of her death certificate, "Obit anus, abit onus" ("The old woman dies, the burden is lifted").
+
+In 1821, he fell in love with nineteen-year-old opera singer, Caroline Richter (called Medon), and had a relationship with her for several years. He discarded marriage plans, however, writing, "Marrying means to halve one's rights and double one's duties," and "Marrying means to grasp blindfolded into a sack hoping to find an eel amongst an assembly of snakes."
+
+

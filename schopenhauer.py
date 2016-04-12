@@ -59,7 +59,16 @@ def buzz(text):
 	top_bundle.send_keys("n")
 
 def get_knowledge(i):
-	return {'qid': get_qid(i), 'answer': get_answer(i)} #maybe changes this to {qid:answer} in the future
+	bundle = browser.find_elements_by_class_name('bundle')[i]
+	qid = bundle.get_attribute("class").split("qid-")[1].split(" ")[0]
+	if i > 0: #this feels inelegant, but works
+		raw_breadcrumb = bundle.find_element_by_class_name('breadcrumb').text
+		answer = raw_breadcrumb.split("/Edit\n")[1]
+		answer = answer.split("(")[0] #get only the first part of the answer, not the parenthetical note
+		answer = answer.split("[")[0] #get only the first part of the answer, not the parenthetical note
+	else:
+		answer = ''
+	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
 
 def get_raw_breadcrumb(i):
         return browser.find_elements_by_class_name('breadcrumb')[i].text
@@ -72,9 +81,6 @@ def get_answer(i):
 	        return get_raw_breadcrumb(i).split("/Edit\n")[1] # We may need to scrape the answers differently, so as to only take things before ( or [. We'll see.
 	else:
 		return ''
-def get_qid(i):
-	bundle = browser.find_elements_by_class_name('bundle')[i]
-	return bundle.get_attribute("class").split("qid-")[1].split(" ")[0]
 
 # define methods to deal with guessing
 knowledge = {}
@@ -126,7 +132,7 @@ try:
 			vprint(str(times)+"("+str(time())+")"+": "+k['qid']+":"+guess)  
 			buzz(guess)
 			answered+=1
-		sleep(.4) #this is ugly, but it works
+		sleep(1) #this is ugly, but it works
 		try:
 			a = get_knowledge(1)
 			vprint("recording {'"+a['qid']+": '"+a['answer']+"'}")
