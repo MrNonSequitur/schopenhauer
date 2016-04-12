@@ -10,9 +10,10 @@ parser = argparse.ArgumentParser(description="Schopenhauer is a program that aut
 parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Schopenhauer\")")
 parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
 parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
-parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number, the bot will run basically forever. Please note that the bot will likely not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
+parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number (including 0), the bot will run forever. Please note that the bot will not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
 parser.add_argument("-v", "--verbose", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
 parser.add_argument("--liszt", "-l", help="enable Lisztomania", action="store_true")
+parser.add_argument("--centennial", "-c", help="write out the bot's knowledge to knowledge.tmp.json whenever the times counter is divisible by 100", action="store_true")
 args = parser.parse_args()
 if args.name:
 	name = args.name
@@ -36,11 +37,16 @@ if args.verbose:
 	verbose = True
 else:
 	verbose = False
+if args.centennial:
+	centennial = True
+else:
+	centennial = False
 
 # define various keys to be sent to protobowl as keyboard shortcuts
 pause = 'p'
 resume = 'r'
 #DO NOT use buzz as an alias for Keys.SPACE; that will reference the function "buzz" instead
+next = 'n'
 chat = '/'
 enter = Keys.RETURN
 skip = 's'
@@ -54,8 +60,7 @@ def vprint(text):
 def buzz(text):
 	top_bundle = browser.find_elements_by_class_name('bundle')[0] #the top bundle is arbitrarily sent keys because we need to send keys to *something*
 	top_bundle.send_keys(Keys.SPACE)
-	sleep(1) #ugly sleep to let the box appear (might be nessecary)
-	top_bundle.send_keys(text + Keys.RETURN)
+	top_bundle.send_keys(text + enter)
 	top_bundle.send_keys("n")
 
 def get_knowledge(i):
@@ -97,6 +102,9 @@ def guess_answer(qid):
 	return ""
 def record_answer(qid, answer):
 	knowledge[qid] = answer
+def write_out(filename):
+	with open(filename, 'w') as f:
+		json.dump(knowledge, f)
 		
 
 
@@ -118,6 +126,7 @@ except Exception as e:
 	vprint("The button couldn't be clicked, assuming it's already pressed...")
 
 try:
+	
 	answered = 0
 	while times != 0: # deliberately allow negative numbers to cause it to loop forever
 		times-=1
@@ -127,28 +136,30 @@ try:
 		k = get_knowledge(0)
 		guess = guess_answer(k['qid']) #this should return an empty string if there is no answer, b/c I can't be bothered to learn error handling
 		if guess == '':
-			top_bundle.send_keys(skip)
+			if browser.find_element_by_class_name('skipbtn').is_displayed():
+				top_bundle.send_keys(skip)
+			elif browser.find_element_by_class_name('nextbtn').is_displayed():
+				top_bundle.send_keys(next)
+			else:
+				top_bundle.send_keys(enter)
 		else:
-			vprint(str(times)+"("+str(time())+")"+": "+k['qid']+":"+guess)  
+			vprint(str(times)+"("+str(time())+")"+": "+k['qid']+":"+guess)
 			buzz(guess)
 			answered+=1
 		sleep(1) #this is ugly, but it works
 		try:
 			a = get_knowledge(1)
-			vprint("recording {'"+a['qid']+": '"+a['answer']+"'}")
 			record_answer(a['qid'], a['answer'])
 		except Exception as e:
 			vprint("When getting knowledge: "+str(e))
-		if times % 100 == 0:
-			vprint("Only "+str(times)+" times left to go")
+		if times % 100 == 0 and centennial:
+			vprint("Only "+str(times)+" times left to go. Writing knowledge to knowledge.tmp.json just in case...")
+			write_out("knowledge.tmp.json")
 	vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was intially.")
-	vprint("Schopenhauer tried to answer a question "+str(answered)+" times, out of "+str(times)+" chances.")
-	vprint("len(knowledge)-answered is "+str(len(knowledge)-answered)+", which should be equal to the initial knowledge length of "+str(initial_knowledge_length)+" but you know how these things go.")
-	with open('knowledge.json', 'w') as f:
-		json.dump(knowledge, f)
+	vprint("Schopenhauer tried to answer a question "+str(answered)+" times")
+	write_out('knowledge.json')
 except Exception as e:
 	vprint("exception in main loop:"+str(e)+"\nAborting...")
-	with open('knowledge.tmp.json', 'w') as f:
-		vprint("attempting to write knowledge to knowledge.tmp.json just in case...")
-		json.dump(knowledge, f)
+	vprint("Writing knowledge to knowledge.tmp.json just in case...")
+	write_out("knowledge.tmp.json")
 browser.quit()
