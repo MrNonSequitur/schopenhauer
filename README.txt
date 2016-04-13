@@ -7,7 +7,9 @@ Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It d
 
 Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use.
 
-You probably need to install Selenium for Python to run this program. I could only get it to work in Python 2, because my copy of Selenium is for Python 2.7.
+You probably need to install Selenium for Python to run this program. I could only get Schopenhauer to work in Python 2, because my copy of Selenium is for Python 2.7.
+
+In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
 
 If Schopenhauer does not know the answer to a question, Schopenhauer will be very bad-mannered and attempt to skip the question.
 
@@ -15,7 +17,9 @@ Schopenhauer was hacked together in a relatively short time by Wyatt Carpenter, 
 
 You might think Arthur Schopenhauer is the mascot of this project. He is not. This project IS Arthur Schopenhauer. Wille zum Leben, baby!
 
-In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
+Because of Schopenhauer's ability to ruin the fun of playing in a Protobowl room everyone without robot-like reflexes, Schopenhauer has been described as "the literal cancer of the literal cancer of the quizbowl community".
+
+The best counter to an instance of Schopenhauer is waiting for the person running the instance to get bored and stop. This should happen relatively quickly.
 
 
 II
