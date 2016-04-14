@@ -113,7 +113,7 @@ def record_answer(qid, answer):
 	knowledge[qid] = answer
 def write_out(filename):
 	with open(filename, 'w') as f:
-		json.dump(knowledge, f, sort_keys=True) # keys will be sorted to reduce deltas
+		json.dump(knowledge, f, sort_keys=True) # keys will be sorted to reduce deltas in our version control system
 		
 
 
