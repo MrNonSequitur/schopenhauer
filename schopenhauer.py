@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep, time
@@ -11,9 +12,11 @@ parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Sch
 parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
 parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
 parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number (including 0), the bot will run forever. Please note that the bot will not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
-parser.add_argument("-v", "--verbose", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
-parser.add_argument("--file", "-f", help="read in knowledge from, and write out knowledge to, the specified file (defaults to knowledge.json in the current working directory)")
+parser.add_argument("--verbose", "-v", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
+parser.add_argument("--input", "-i", help="read in knowledge from the specified file (defaults to knowledge.json in the current working directory)")
+parser.add_argument("--output", "-o", help="write out knowledge to the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--centennial", "-c", help="write out the bot's knowledge to file whenever the times counter is divisible by 100", action="store_true")
+parser.add_argument("--be_the_schopenhauer", "-b", help="enables an input() just before the main loop so one can execute python during runtime. Useful for debugging and performing transformations on the knowledge base. Somewhat dangerous", action="store_true")
 parser.add_argument("--liszt", "-l", help="enable Lisztomania", action="store_true")
 args = parser.parse_args()
 if args.name:
@@ -42,10 +45,18 @@ if args.centennial:
 	centennial = True
 else:
 	centennial = False
-if args.file:
-	filename = args.file
+if args.input:
+	file_in = args.input
 else:
-	filename = "knowledge.json"
+	file_in = "knowledge.json"
+if args.output:
+	file_out = args.output
+else:
+	file_out = "knowledge.json"
+if args.be_the_schopenhauer:
+	be_the_schopenhauer = True
+else:
+	be_the_schopenhauer = False
 	
 
 # define various keys to be sent to protobowl as keyboard shortcuts
@@ -66,6 +77,7 @@ def vprint(text):
 def buzz(text):
 	top_bundle = browser.find_elements_by_class_name('bundle')[0] #the top bundle is arbitrarily sent keys because we need to send keys to *something*
 	top_bundle.send_keys(Keys.SPACE)
+	sleep(.5) # let the guess box appear
 	top_bundle.send_keys(text + enter)
 	top_bundle.send_keys("n")
 
@@ -77,6 +89,8 @@ def get_knowledge(i):
 		answer = raw_breadcrumb.split("/Edit\n")[1]
 		answer = answer.split("(")[0] #get only the first part of the answer, not the parenthetical note
 		answer = answer.split("[")[0] #get only the first part of the answer, not the parenthetical note
+		answer = answer.strip() #strip whitespace characters from around the answer (presumably in between the parenthetical note and the real answer)
+		answer = answer.replace(u"”","\"").replace(u"“", "\"").replace(u"’","'").replace(u"‘","'") #replace the l/r quote marks, which occasionally cause Protobowl to reject correct answers with honset, god-fearing, america-loving straight quote marks.
 	else:
 		answer = ''
 	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
@@ -89,17 +103,18 @@ def get_breadcrumb(i):
 
 def get_answer(i):
 	if i > 0: #this feels inelegant, but works
-	        return get_raw_breadcrumb(i).split("/Edit\n")[1] # We may need to scrape the answers differently, so as to only take things before ( or [. We'll see.
+	        return get_raw_breadcrumb(i).split("/Edit\n")[1]
 	else:
 		return ''
 
 # define methods to deal with guessing
 knowledge = {}
 try:
-	with open(filename, 'r') as f:
+	with open(file_in, 'r') as f:
 		knowledge = json.load(f)
 		#I'm not a huge fan of json (sexprs are better), but this is better than my original plan of calling eval on whatever we find in knowledge.json and hoping it's a data sctructure
 except Exception as e:
+	print(str(e))
 	knowledge = {}
 initial_knowledge_length = len(knowledge)
 vprint("knowledge currently consists of "+str(len(knowledge))+" pairs.")
@@ -114,9 +129,6 @@ def record_answer(qid, answer):
 def write_out(filename):
 	with open(filename, 'w') as f:
 		json.dump(knowledge, f, sort_keys=True) # keys will be sorted to reduce deltas in our version control system
-		
-
-
 
 # navigate to the website
 browser = webdriver.Firefox()
@@ -136,7 +148,8 @@ except Exception as e:
 	vprint("The button couldn't be clicked, assuming it's already pressed...")
 
 try:
-	
+	if be_the_schopenhauer:
+		input("> ")
 	answered = 0
 	while times != 0: # deliberately allow negative numbers to cause it to loop forever
 		times-=1
@@ -164,11 +177,11 @@ try:
 		except Exception as e:
 			vprint("When getting knowledge: "+str(e))
 		if times % 100 == 0 and centennial:
-			vprint("Only "+str(times)+" times left to go. Writing out knowledge...")
-			write_out(filename)
+			vprint("Only "+str(times)+" times left to go. Writing out knowledge to " + str(file_out)+"... ("+str(len(knowledge))+" pairs)")
+			write_out(file_out)
 	vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was intially.")
 	vprint("Schopenhauer tried to answer a question "+str(answered)+" times")
-	write_out(filename)
+	write_out(file_out)
 except Exception as e:
 	vprint("exception in main loop:"+str(e)+"\nAborting...")
 	try:
