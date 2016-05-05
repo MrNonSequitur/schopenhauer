@@ -12,6 +12,7 @@ parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Sch
 parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
 parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
 parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number (including 0), the bot will run forever. Please note that the bot will not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
+parser.add_argument("--delay", "-d", type=float, help="set the amount of seconds the bot will wait for answering a question. This can help him appear to be human. This is set to 1 by default, so that Schopenhauer will avoid rate-limitation.")
 parser.add_argument("--verbose", "-v", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
 parser.add_argument("--input", "-i", help="read in knowledge from the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--output", "-o", help="write out knowledge to the specified file (defaults to knowledge.json in the current working directory)")
@@ -33,6 +34,10 @@ if args.times:
 	times = args.times
 else:
 	times = -1
+if args.delay:
+	delay = args.delay
+else:
+	delay = 1
 if args.liszt:
 	lisztomania = True
 else:
@@ -90,7 +95,7 @@ def get_knowledge(i):
 		answer = answer.split("(")[0] #get only the first part of the answer, not the parenthetical note
 		answer = answer.split("[")[0] #get only the first part of the answer, not the parenthetical note
 		answer = answer.strip() #strip whitespace characters from around the answer (presumably in between the parenthetical note and the real answer)
-		answer = answer.replace(u"”","\"").replace(u"“", "\"").replace(u"’","'").replace(u"‘","'") #replace the l/r quote marks, which occasionally cause Protobowl to reject correct answers with honset, god-fearing, america-loving straight quote marks.
+		answer = answer.strip(u"”").strip(u"“").strip(u"’").strip(u"‘").strip("'").strip("\"") # strip all quote marks, which occasionally cause Protobowl to reject correct answers
 	else:
 		answer = ''
 	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
@@ -152,25 +157,25 @@ try:
 		input("> ")
 	answered = 0
 	while times != 0: # deliberately allow negative numbers to cause it to loop forever
+		curr_well = browser.find_element_by_class_name('well')#track well to determine the current question. the well is arbitrarily sent keys because we need to send keys to *something*
 		times-=1
-		top_bundle = browser.find_elements_by_class_name('bundle')[0] #the top bundle is arbitrarily sent keys because we need to send keys to *something*
-		# browser.find_elements_by_xpath("//*[contains(@class, \"bundle\")]")	
-
+		if browser.find_element_by_class_name('finished').is_displayed():
+			curr_well.send_keys(next)
+			curr_well = browser.find_element_by_class_name('well')
 		k = get_knowledge(0)
-		guess = guess_answer(k['qid']) #this should return an empty string if there is no answer, b/c I can't be bothered to learn error handling
+		guess = guess_answer(k['qid']) #this should return an empty string if there is no answer, b/c I can't be bothered to learn error handling		
+		if browser.find_elements_by_class_name('pause')[1].is_displayed(): # must match the label [1] not the button [0]
+			curr_well.send_keys(resume)
 		if guess == '':
-			if browser.find_element_by_class_name('skipbtn').is_displayed():
-				top_bundle.send_keys(skip)
-			elif browser.find_element_by_class_name('nextbtn').is_displayed():
-				top_bundle.send_keys(next)
-			else:
-				#if neither of those options was available then Schopenhauer is probably accidentally chatting
-				top_bundle.send_keys(enter)
+			if browser.find_element_by_class_name('pausebtn').is_displayed():
+				curr_well.send_keys(skip)
+			else: # Schopenhauer is probably chatting accidentally
+				buzz("Franz Liszt")
 		else:
 			vprint(str(times)+"("+str(time())+")"+": "+k['qid']+":"+guess)
 			buzz(guess)
 			answered+=1
-		sleep(1) #this is ugly, but it works. tweakable value
+		sleep(delay) #this is ugly, but it works. tweakable value
 		try:
 			a = get_knowledge(1)
 			record_answer(a['qid'], a['answer'])
@@ -179,6 +184,7 @@ try:
 		if times % 100 == 0 and centennial:
 			vprint("Only "+str(times)+" times left to go. Writing out knowledge to " + str(file_out)+"... ("+str(len(knowledge))+" pairs)")
 			write_out(file_out)
+		
 	vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was intially.")
 	vprint("Schopenhauer tried to answer a question "+str(answered)+" times")
 	write_out(file_out)
