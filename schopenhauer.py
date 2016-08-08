@@ -12,12 +12,12 @@ parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Sch
 parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
 parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
 parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number (including 0), the bot will run forever. Please note that the bot will not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
-parser.add_argument("--delay", "-d", type=float, help="set the amount of seconds the bot will wait for answering a question. This can help him appear to be human. This is set to 1 by default, so that Schopenhauer will avoid rate-limitation.")
+parser.add_argument("--delay", "-d", type=float, help="set the amount of seconds the bot will wait for answering a question. This can help him appear to be human. This is set to 1 by default, so that Schopenhauer will avoid rate-limitation. This feature was added because Eric Zhu wanted the d")
 parser.add_argument("--verbose", "-v", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
 parser.add_argument("--input", "-i", help="read in knowledge from the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--output", "-o", help="write out knowledge to the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--centennial", "-c", help="write out the bot's knowledge to file whenever the times counter is divisible by 100", action="store_true")
-parser.add_argument("--be_the_schopenhauer", "-b", help="enables an input() just before the main loop so one can execute python during runtime. Useful for debugging and performing transformations on the knowledge base. Somewhat dangerous", action="store_true")
+parser.add_argument("--be_the_schopenhauer", "-b", help="enables a primitive python command line just before the main loop so one can execute python during runtime. Useful for debugging and performing transformations on the knowledge base. Somewhat dangerous", action="store_true")
 parser.add_argument("--liszt", "-l", help="enable Lisztomania", action="store_true")
 args = parser.parse_args()
 if args.name:
@@ -101,14 +101,14 @@ def get_knowledge(i):
 	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
 
 def get_raw_breadcrumb(i):
-        return browser.find_elements_by_class_name('breadcrumb')[i].text
+	return browser.find_elements_by_class_name('breadcrumb')[i].text
 
 def get_breadcrumb(i):
 	return get_raw_breadcrumb(i).split("/Edit\n")[0]
 
 def get_answer(i):
 	if i > 0: #this feels inelegant, but works
-	        return get_raw_breadcrumb(i).split("/Edit\n")[1]
+		return get_raw_breadcrumb(i).split("/Edit\n")[1]
 	else:
 		return ''
 
@@ -117,7 +117,7 @@ knowledge = {}
 try:
 	with open(file_in, 'r') as f:
 		knowledge = json.load(f)
-		#I'm not a huge fan of json (sexprs are better), but this is better than my original plan of calling eval on whatever we find in knowledge.json and hoping it's a data sctructure
+		#I'm not a huge fan of json (sexprs are better), but this is better than my original plan of calling eval on whatever we find in knowledge.json and hoping it's a data structure
 except Exception as e:
 	print(str(e))
 	knowledge = {}
@@ -146,6 +146,17 @@ elem = browser.find_element_by_id('username') # find the username box
 elem.clear()
 elem.send_keys(name + Keys.RETURN)
 
+if be_the_schopenhauer:
+	print("Entering the Schopenhauer command line...")
+	print("Hit enter on an empty line to exit and make Schopenhauer begin to answer questions. Type \"exit()\" to exit Schopenhauer but keep the protobowl window open. Hit Control D (or, as always, Control C) to exit Schopenhauer and close the window.")
+	tmp = input("> ")
+	while(tmp):
+		try:
+			print(str(eval(tmp)))
+		except Exception as e:
+			print(str(e))
+		tmp = input("> ")
+
 #click button to start questions
 try:
 	browser.find_element_by_class_name("btn-large").click()
@@ -153,8 +164,6 @@ except Exception as e:
 	vprint("The button couldn't be clicked, assuming it's already pressed...")
 
 try:
-	if be_the_schopenhauer:
-		input("> ")
 	answered = 0
 	while times != 0: # deliberately allow negative numbers to cause it to loop forever
 		curr_well = browser.find_element_by_class_name('well')#track well to determine the current question. the well is arbitrarily sent keys because we need to send keys to *something*
@@ -175,7 +184,7 @@ try:
 			vprint(str(times)+"("+str(time())+")"+": "+k['qid']+":"+guess)
 			buzz(guess)
 			answered+=1
-		sleep(delay) #this is ugly, but it works. tweakable value
+		sleep(delay) #this is ugly, but it works
 		try:
 			a = get_knowledge(1)
 			record_answer(a['qid'], a['answer'])

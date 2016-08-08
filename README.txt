@@ -5,9 +5,9 @@ I
 
 Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It does this by cheating.
 
-Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use.
+Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use. Schopenhauer will create a browser window on your screen that will probably grab focus all the time. I'm not sure what the correct way to deal with this is, but I find that if you Inspect an Element somewhere on the page the browser window will stop grabbing focus.
 
-You probably need to install Selenium for Python to run this program. I could only get Schopenhauer to work in Python 2, because my copy of Selenium is for Python 2.7.
+You probably need to install Selenium for Python to run this program. I could only get Schopenhauer to work in Python 3, because my copy of Selenium only works for Python 3, but it should *mostly* work in Python 2 (if that's important to you).
 
 In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
 
