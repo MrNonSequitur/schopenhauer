@@ -7,7 +7,7 @@ import json
 import argparse
 
 #parse command-line arguments
-parser = argparse.ArgumentParser(description="Schopenhauer is a program that autonomously plays Protobowl, a digital version of Quiz Bowl, which is a quiz game.")
+parser = argparse.ArgumentParser(description="Schopenhauer is a program that autonomously plays Protobowl, a digital version of Quizbowl, which is a quiz game.")
 parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Schopenhauer\")")
 parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
 parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
@@ -147,15 +147,30 @@ elem.clear()
 elem.send_keys(name + Keys.RETURN)
 
 if be_the_schopenhauer:
-	print("Entering the Schopenhauer command line...")
-	print("Hit enter on an empty line to exit and make Schopenhauer begin to answer questions. Type \"exit()\" to exit Schopenhauer but keep the protobowl window open. Hit Control D (or, as always, Control C) to exit Schopenhauer and close the window.")
-	tmp = input("> ")
-	while(tmp):
-		try:
-			print(str(eval(tmp)))
-		except Exception as e:
-			print(str(e))
-		tmp = input("> ")
+	depth = 0
+	command = ''
+	prompt = ">>> "
+	schelp = "Welcome to the Schopenhauer command line! This is an interpretive python session that almost works!\n\nHit enter on an empty line to exit and make Schopenhauer begin to answer questions. Type \"exit()\" to exit Schopenhauer but keep the protobowl window open. Hit Control D (or, as always, Control C) to exit Schopenhauer and close the window.\n\nType \"schelp\" to see this message again. You can also access the native python information by typing \"help\", \"copyright\", \"credits\" or \"license\" for more information."
+	print(schelp)
+	line = input(prompt)
+	command += line 
+	while(command or depth):
+		if(line is ''):
+			depth -= 1
+		elif(line[-1] is ":"):
+			depth += 1
+		if(depth == 0):
+			try:
+				print(str(eval(command)))
+			except Exception as e:
+				print(str(e))
+			command = ''
+			prompt = ">>> "
+		else:
+			command += ('\n'+'\t'*depth)
+			prompt = "... "+'\t'*depth
+		line = input(prompt)
+		command += line
 
 #click button to start questions
 try:
