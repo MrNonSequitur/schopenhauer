@@ -6,6 +6,12 @@ from time import sleep, time
 import json
 import argparse
 
+#The Solomon Ucko Memorial Python 2/3 Input Method Compatibility Hack
+try:
+    input = raw_input
+except NameError as e:
+    pass
+
 #parse command-line arguments
 parser = argparse.ArgumentParser(description="Schopenhauer is a program that autonomously plays Protobowl, a digital version of Quizbowl, which is a quiz game.")
 parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Schopenhauer\")")
