@@ -7,7 +7,7 @@ Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It d
 
 Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use. Schopenhauer will create a browser window on your screen that will probably grab focus all the time. I'm not sure what the correct way to deal with this is, but I find that if you Inspect an Element somewhere on the page the browser window will stop grabbing focus.
 
-You probably need to install Selenium for Python to run this program. I could only get Schopenhauer to work in Python 3, because my copy of Selenium only works for Python 3, but it should *mostly* work in Python 2 (if that's important to you).
+You probably need to install Selenium for Python to run this program. I only tested Schopenhauer in Python 3, but it should also work in Python 2.
 
 In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
 
@@ -17,7 +17,7 @@ Schopenhauer was hacked together in a relatively short time by Wyatt Carpenter, 
 
 You might think Arthur Schopenhauer is the mascot of this project. He is not. This project IS Arthur Schopenhauer. Wille zum Leben, baby!
 
-Because of Schopenhauer's ability to ruin the fun of playing in a Protobowl room everyone without robot-like reflexes, Schopenhauer has been described as "the literal cancer of the literal cancer of the quizbowl community".
+Because of Schopenhauer's ability to ruin the fun of playing in a Protobowl room for everyone without robot-like reflexes, Schopenhauer has been described as "the literal cancer of the literal cancer of the quizbowl community".
 
 The best counter to an instance of Schopenhauer is waiting for the person running the instance to get bored and stop. This should happen relatively quickly.
 
@@ -43,7 +43,6 @@ Real holy laughter in solute heart of the poem of life butchered out of their ow
 
 III
 
-
 Some fun Schopenhauer facts, stolen straight from his Wikipedia page:
 
 Schopenhauer had a notably strained relationship with his mother Johanna. He wrote his first book, On the Fourfold Root of the Principle of Sufficient Reason, while at university. His mother informed him that the book was incomprehensible and it was unlikely that anyone would ever buy a copy. In a fit of temper Arthur Schopenhauer told her that his work would be read long after the "rubbish" she wrote would have been totally forgotten.
@@ -53,5 +52,3 @@ In 1820, Schopenhauer became a lecturer at the University of Berlin. He schedule
 While in Berlin, Schopenhauer was named as a defendant in a lawsuit initiated by a woman named Caroline Marquet. She asked for damages, alleging that Schopenhauer had pushed her. According to Schopenhauer's court testimony, she deliberately annoyed him by raising her voice while standing right outside his door. Marquet alleged that the philosopher had assaulted and battered her after she refused to leave his doorway. Her companion testified that she saw Marquet prostrate outside his apartment. Because Marquet won the lawsuit, Schopenhauer made payments to her for the next twenty years. When she died, he wrote on a copy of her death certificate, "Obit anus, abit onus" ("The old woman dies, the burden is lifted").
 
 In 1821, he fell in love with nineteen-year-old opera singer, Caroline Richter (called Medon), and had a relationship with her for several years. He discarded marriage plans, however, writing, "Marrying means to halve one's rights and double one's duties," and "Marrying means to grasp blindfolded into a sack hoping to find an eel amongst an assembly of snakes."
-
-
