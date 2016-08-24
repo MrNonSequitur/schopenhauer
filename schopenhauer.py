@@ -8,9 +8,9 @@ import argparse
 
 #The Solomon Ucko Memorial Python 2/3 Input Method Compatibility Hack
 try:
-    input = raw_input
+	input = raw_input
 except NameError as e:
-    pass
+	pass
 
 #parse command-line arguments
 parser = argparse.ArgumentParser(description="Schopenhauer is a program that autonomously plays Protobowl, a digital version of Quizbowl, which is a quiz game.")
@@ -218,8 +218,8 @@ try:
 	vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was intially.")
 	vprint("Schopenhauer tried to answer a question "+str(answered)+" times")
 	write_out(file_out)
-except Exception as e:
-	vprint("exception in main loop:"+str(e)+"\nAborting...")
+except:
+	vprint("exception in main loop.\nAborting...")
 	try:
 		vprint("Writing knowledge to knowledge.tmp.json just in case...")
 		write_out("knowledge.tmp.json")
