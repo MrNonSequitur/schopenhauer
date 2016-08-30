@@ -101,7 +101,7 @@ def get_knowledge(i):
 		answer = answer.split("(")[0] #get only the first part of the answer, not the parenthetical note
 		answer = answer.split("[")[0] #get only the first part of the answer, not the parenthetical note
 		answer = answer.strip() #strip whitespace characters from around the answer (presumably in between the parenthetical note and the real answer)
-		answer = answer.strip(u"”").strip(u"“").strip(u"’").strip(u"‘").strip("'").strip("\"") # strip all quote marks, which occasionally cause Protobowl to reject correct answers
+		answer = answer.strip(u"\u2018").strip(u"\u2019").strip(u"\u201c").strip(u"\u201d").strip("'").strip("\"") # strip all quote marks, which occasionally cause Protobowl to reject correct answers
 	else:
 		answer = ''
 	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
