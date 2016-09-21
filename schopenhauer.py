@@ -23,7 +23,6 @@ parser.add_argument("--verbose", "-v", action="store_true", help="make vague com
 parser.add_argument("--input", "-i", help="read in knowledge from the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--output", "-o", help="write out knowledge to the specified file (defaults to knowledge.json in the current working directory)")
 parser.add_argument("--centennial", "-c", help="write out the bot's knowledge to file whenever the times counter is divisible by 100", action="store_true")
-parser.add_argument("--be_the_schopenhauer", "-b", help="enables a primitive python command line just before the main loop so one can execute python during runtime. Useful for debugging and performing transformations on the knowledge base. Somewhat dangerous", action="store_true")
 parser.add_argument("--liszt", "-l", help="enable Lisztomania", action="store_true")
 args = parser.parse_args()
 if args.name:
@@ -64,10 +63,6 @@ if args.output:
 	file_out = args.output
 else:
 	file_out = "knowledge.json"
-if args.be_the_schopenhauer:
-	be_the_schopenhauer = True
-else:
-	be_the_schopenhauer = False
 
 # define various methods to be used in interpretting the website
 # the breadcrumb stuff could probably be refactored, but it should work as-is.
@@ -145,32 +140,6 @@ while not browser.find_element_by_id('username').is_displayed():
 elem = browser.find_element_by_id('username') # find the username box
 elem.clear()
 elem.send_keys(name + Keys.RETURN)
-
-if be_the_schopenhauer:
-	depth = 0
-	command = ''
-	prompt = ">>> "
-	schelp = "Welcome to the Schopenhauer command line! This is an interpretive python session that almost works!\n\nHit enter on an empty line to exit and make Schopenhauer begin to answer questions. Type \"exit()\" to exit Schopenhauer but keep the protobowl window open. Hit Control D (or, as always, Control C) to exit Schopenhauer and close the window.\n\nType \"schelp\" to see this message again. You can also access the native python information by typing \"help\", \"copyright\", \"credits\" or \"license\" for more information."
-	print(schelp)
-	line = input(prompt)
-	command += line 
-	while(command or depth):
-		if(line is ''):
-			depth -= 1
-		elif(line[-1] is ":"):
-			depth += 1
-		if(depth == 0):
-			try:
-				print(str(eval(command)))
-			except Exception as e:
-				print(str(e))
-			command = ''
-			prompt = ">>> "
-		else:
-			command += ('\n'+'\t'*depth)
-			prompt = "... "+'\t'*depth
-		line = input(prompt)
-		command += line
 
 #click button to start questions
 try:
