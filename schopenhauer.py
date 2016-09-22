@@ -72,13 +72,11 @@ def vprint(text):
 
 def buzz(text):
 	top_bundle = browser.find_elements_by_class_name('bundle')[0] #the top bundle is arbitrarily sent keys because we need to send keys to *something*
-	try:
-		browser.find_element_by_class_name('buzzbtn').click()	
-		vprint("hit buzz button")
+	if browser.find_element_by_class_name('buzzbtn').is_enabled():
+		top_bundle.send_keys(" ")
+		vprint("buzzing in")
 		sleep(.5) # let the guess box appear
-		top_bundle.send_keys(text + '\n')
-	except: vprint("couldn't hit buzz"); top_bundle.send_keys('\n')
-	
+		top_bundle.send_keys(text + '\n')	
 	
 def get_knowledge(i):
 	bundle = browser.find_elements_by_class_name('bundle')[i]
