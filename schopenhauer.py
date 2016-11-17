@@ -177,6 +177,8 @@ try:
 			if times % 100 == 0 and centennial:
 				vprint("Only "+str(times)+" times left to go. Writing out knowledge to " + str(file_out)+"... ("+str(len(knowledge))+" pairs)")
 				write_out(file_out)
+			if times % 2000 == 0:
+                                browser.get(url) #proto disconnects you after a while
 			sleep(delay)
 			try:
 				browser.find_element_by_class_name('nextbtn').click()	
