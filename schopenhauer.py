@@ -7,16 +7,11 @@ import json
 import argparse
 import unicodedata
 
-#The Solomon Ucko Memorial Python 2/3 Input Method Compatibility Hack
-try:
-	input = raw_input
-except NameError as e: pass
-
 #parse command-line arguments
-parser = argparse.ArgumentParser(description="Schopenhauer is a program that autonomously plays Protobowl, a digital version of Quizbowl, which is a quiz game.")
-parser.add_argument("--name", "-n", help="set the name of the bot (Default \"Schopenhauer\")")
-parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (Default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
-parser.add_argument("--url", "-u", help="set the url the bot will operate on (Default \"protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include http or whatever!")
+parser = argparse.ArgumentParser(description="Schopenhauer is a bot that autonomously plays Protobowl, a digital version of Quizbowl, which is a trivia game.")
+parser.add_argument("--name", "-n", help="set the name of the bot (default \"Schopenhauer\")")
+parser.add_argument("--room", "-r", help="set the Protobowl.com room the bot will operate in (default \"Schopenhauer\"). This will be overidden by the url option, if both are given")
+parser.add_argument("--url", "-u", help="set the url the bot will operate on (default \"http://protobowl.com/Schopenhauer\"). This overrides the room option, if both are given. Make sure to include the scheme of the url, such as \"http\"")
 parser.add_argument("--times", "-t", type=int, help="set the number of times the main loop of the bot will run (If this option is missing or set to a non-positive number (including 0), the bot will run forever. Please note that the bot will not record any changes to its knowledge if it is terminated by a keyboard interupt or other external pressures)")
 parser.add_argument("--delay", "-d", type=float, help="set the amount of seconds the bot will wait for answering a question. This can help him appear to be human. This is set to 1 by default, so that Schopenhauer will avoid rate-limitation. This feature was added because Eric Zhu wanted the d")
 parser.add_argument("--verbose", "-v", action="store_true", help="make vague comments about the internal operation of Schopenhauer as it runs")
@@ -93,7 +88,7 @@ def get_knowledge(i):
 		answer = answer.strip(u"\u2018").strip(u"\u2019").strip(u"\u201c").strip(u"\u201d").strip("'").strip("\"") # strip all quote marks, which occasionally cause Protobowl to reject correct answers
 	else:
 		answer = ''
-	return {'qid': qid, 'answer': answer} #maybe changes this to {qid:answer} in the future
+	return {'qid': qid, 'answer': answer}
 
 def get_raw_breadcrumb(i):
 	return browser.find_elements_by_class_name('breadcrumb')[i].text
@@ -127,7 +122,7 @@ def record_answer(qid, answer):
 	knowledge[qid] = answer
 def write_out(filename, object=knowledge):
 	with open(filename, 'w') as f:
-		json.dump(object, f, sort_keys=True) # keys will be sorted to reduce deltas in our version control system
+		json.dump(object, f, sort_keys=True) # keys sorted to reduce deltas in our version control system
 
 # navigate to the website
 browser = webdriver.Firefox()
@@ -174,10 +169,10 @@ try:
 				record_answer(a['qid'], a['answer'])
 			except Exception as e:
 				vprint("When getting knowledge: "+str(e))
-			if times % 100 == 0 and centennial:
+			if times + 1 % 100 == 0 and centennial:
 				vprint("Only "+str(times)+" times left to go. Writing out knowledge to " + str(file_out)+"... ("+str(len(knowledge))+" pairs)")
 				write_out(file_out)
-			if times % 2000 == 0:
+			if times + 1 % 2000 == 0: #arbitrary value
                                 browser.get(url) #proto disconnects you after a while
 			sleep(delay)
 			try:
@@ -185,7 +180,7 @@ try:
 				vprint("hit next button")
 			except: vprint("couldn't hit next")
 			
-		vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was intially.")
+		vprint("knowledge is now "+str(len(knowledge))+ " pairs, which is "+str(len(knowledge)-initial_knowledge_length)+" more than it was initially.")
 		vprint("Schopenhauer tried to answer a question "+str(answered)+" times")
 		write_out(file_out)
 	except Exception as e:
