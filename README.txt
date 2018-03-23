@@ -7,13 +7,15 @@ Schopenhauer is a bot that plays Protobowl, an online version of Quiz Bowl. It d
 
 Run schopenhauer.py to run the program. schopenhauer.py -h will tell you about the command line arguments you can use. Schopenhauer will create a browser window on your screen that will probably grab focus all the time. I'm not sure what the correct way to deal with this is, but I find that if you Inspect an Element somewhere on the page the browser window will stop grabbing focus.
 
-You probably need to install Selenium for Python to run this program. I only tested Schopenhauer in Python 3, but it should also work in Python 2.
+You probably need to install Selenium for Python to run this program. I only tested Schopenhauer in Python 3, but it should also work in Python 2. This project was made at the tail end of the Selenium 2 days, and I could never really get it to work with Selenium 3 (not that I tried very hard).
 
 In honor of Protobowl's readme, this project's readme is also an incoherent mess. In honor of Protobowl, this project is also a piece of crap.
 
 If Schopenhauer does not know the answer to a question, Schopenhauer will be very bad-mannered and attempt to skip the question.
 
 Schopenhauer was hacked together in a relatively short time by Wyatt Carpenter, Co-President of the 2015-2016 Inglemoor Quiz Bowl team. Construction of Schopenhauer was aided by the various interesting properties of Protobowl's many errors.
+
+Occasionally, Protobowl will reject as incorrect an answer that is literally identical to the answer that Protobowl later tells you is correct. After following many hunches and making many pointless-in-retrospect changes to Schopenhauer's code, I was ultimately unable to figure out why this happens, and thus Schopenhauer cannot account for it and simply makes the occasional neg.
 
 You might think Arthur Schopenhauer is the mascot of this project. He is not. This project IS Arthur Schopenhauer. Wille zum Leben, baby!
 
@@ -38,8 +40,7 @@ They broke their backs lifting Schopenhauer to Heaven! Pavements, trees, radios,
 Visions! omens! hallucinations! miracles! ecstasies! gone down the American river!
 Dreams! adorations! illuminations! religions! the whole boatload of sensitive bullshit!
 Breakthroughs! over the river! flips and crucifixions! gone down the flood! Highs! Epiphanies! Despairs! Ten years’ animal screams and suicides! Minds! New loves! Mad generation! down on the rocks of Time!
-Real holy laughter in solute heart of the poem of life butchered out of their own bodies good to eat a thousand years.
-
+Real holy laughter in the river! They saw it all! the wild eyes! the holy yells! They bade farewell! They jumped off the roof! to solitude! waving! carrying flowers! Down to the river! into the street!
 
 III
 
