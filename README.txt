@@ -44,7 +44,7 @@ Real holy laughter in the river! They saw it all! the wild eyes! the holy yells!
 
 III
 
-Some fun Schopenhauer facts, stolen straight from his Wikipedia page:
+Some fun Schopenhauer facts, stolen straight from his Wikipedia page, https://en.wikipedia.org/wiki/Arthur_Schopenhauer
 
 Schopenhauer had a notably strained relationship with his mother Johanna. He wrote his first book, On the Fourfold Root of the Principle of Sufficient Reason, while at university. His mother informed him that the book was incomprehensible and it was unlikely that anyone would ever buy a copy. In a fit of temper Arthur Schopenhauer told her that his work would be read long after the "rubbish" she wrote would have been totally forgotten.
 
